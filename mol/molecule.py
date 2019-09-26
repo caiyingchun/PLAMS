@@ -1296,7 +1296,6 @@ class Molecule:
             shift = 1 if (len(lst) > 4 and lst[0] == str(i)) else 0
             num = lst[0+shift]
             if isinstance(num, str):
-                #num = str(num.split(".")[0])
                 num = PT.get_atomic_number(num)
             self.add_atom(Atom(atnum=num, coords=(lst[1+shift],lst[2+shift],lst[3+shift])))
 
