@@ -12,7 +12,7 @@ from os.path import isfile, isdir, expandvars, dirname
 from .errors import PlamsError
 from .settings import Settings
 
-__all__ = ['init', 'finish', 'log', 'load', 'load_all', 'add_to_class', 'add_to_instance', 'config', 'read_molecules']
+__all__ = ['init', 'finish', 'log', 'load', 'load_all', 'delete_job', 'add_to_class', 'add_to_instance', 'config', 'read_molecules']
 
 config = Settings()
 
@@ -48,9 +48,9 @@ def init(path=None, folder=None):
     from .jobmanager import JobManager
     config.default_jobmanager = JobManager(config.jobmanager, path, folder)
 
-    log('Running PLAMS located in {}'.format(dirname(dirname(__file__))) ,5)
+    log('Running PLAMS located in {}'.format(dirname(dirname(__file__))), 5)
     log('Using Python {}.{}.{} located in {}'.format(*sys.version_info[:3], sys.executable), 5)
-    log('PLAMS defaults were loaded from {}'.format(defaults) ,5)
+    log('PLAMS defaults were loaded from {}'.format(defaults), 5)
 
     log('PLAMS environment initialized', 5)
     log('PLAMS working folder: {}'.format(config.default_jobmanager.workdir), 1)
@@ -121,6 +121,22 @@ def load_all(path, jobmanager=None):
         else:
             loaded_jobs.update(load_all(path=opj(path,foldername), jobmanager=jm))
     return loaded_jobs
+
+
+#===========================================================================
+
+
+def delete_job(job, jobmanager=None):
+    """Delete the job folder from the disk and remove it from *jobmanager*. Mark job as 'deleted'.
+
+    If *jobmanager* is ``None``, use the default job manager from ``config.default_jobmanager``."""
+    if jobmanager is None:
+        jobmanager = config.default_jobmanager
+
+    jobmanager.remove_job(job)
+    shutil.rmtree(job.path)
+    job.status = 'deleted'
+    job._log_status(5)
 
 
 #===========================================================================

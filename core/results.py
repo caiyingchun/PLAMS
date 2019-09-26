@@ -71,6 +71,9 @@ def _restrict(func):
             else:
                 raise ResultsError('Using Results associated with job run in a preview mode')
 
+        elif self.job.status in ['deleted']:
+            raise ResultsError('Using Results associated with deleted job')
+
         elif self.job.status in ['crashed', 'failed']:
             if func.__name__ == 'wait': #waiting for crashed of failed job should not trigger any warnings/exceptions
                 cal, arg = _caller_name_and_arg(inspect.currentframe())
