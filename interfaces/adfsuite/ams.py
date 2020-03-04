@@ -499,10 +499,10 @@ class AMSJob(SingleJob):
             return False
         if 'NORMAL TERMINATION' in status:
             if 'errors' in status:
-                log('Job {} reported errors. Please check the the output'.format(self.name), 1)
+                log('Job {} reported errors. Please check the the output'.format(self._full_name()), 1)
                 return False
             if 'warnings' in status:
-                log('Job {} reported warnings. Please check the the output'.format(self.name), 1)
+                log('Job {} reported warnings. Please check the the output'.format(self._full_name()), 1)
             return True
         return False
 
@@ -630,7 +630,7 @@ class AMSJob(SingleJob):
         elif isinstance(self.molecule, dict):
             moldict = self.molecule
         else:
-            raise JobError("Incorrect 'molecule' attribute of job {}. 'molecule' should be a Molecule, a dictionary or None".format(self.name))
+            raise JobError("Incorrect 'molecule' attribute of job {}. 'molecule' should be a Molecule, a dictionary or None".format(self._full_name()))
 
         ret = []
         for name, molecule in moldict.items():
@@ -639,7 +639,7 @@ class AMSJob(SingleJob):
                 newsystem._h = name
 
             if len(molecule.lattice) in [1,2] and molecule.align_lattice():
-                log("The lattice of {} Molecule supplied for job {} did not follow the convention required by AMS. I rotated the whole system for you. You're welcome".format(name if name else 'main', self.name), 3)
+                log("The lattice of {} Molecule supplied for job {} did not follow the convention required by AMS. I rotated the whole system for you. You're welcome".format(name if name else 'main', self._full_name()), 3)
 
             newsystem.atoms._1 = [atom.str(symbol=self._atom_symbol(atom), space=18, decimal=10,
                     suffix=(atom.properties.suffix if 'suffix' in atom.properties else '')) for atom in molecule]

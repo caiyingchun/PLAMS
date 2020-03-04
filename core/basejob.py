@@ -262,7 +262,13 @@ class Job:
 
     def _log_status(self, level):
         """Log the status of this instance on a chosen log *level*. The message is uppercased to clearly stand out among other log entries."""
-        log('JOB {} {}'.format(self.name, self.status.upper()), level)
+        log('JOB {} {}'.format(self._full_name(), self.status.upper()), level)
+
+
+    def _full_name(self):
+        if self.parent:
+            return '/'.join([self.parent._full_name(), self.name])
+        return self.name
 
 
 #===========================================================================

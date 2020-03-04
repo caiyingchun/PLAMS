@@ -39,15 +39,15 @@ class ADFFragmentJob(MultiJob):
         self.full_settings = full_settings or Settings()
 
     def prerun(self):
-        self.f1 = ADFJob(name=self.name+'_f1', molecule=self.fragment1, settings=self.settings)
-        self.f2 = ADFJob(name=self.name+'_f2', molecule=self.fragment2, settings=self.settings)
+        self.f1 = ADFJob(name='frag1', molecule=self.fragment1, settings=self.settings)
+        self.f2 = ADFJob(name='frag2', molecule=self.fragment2, settings=self.settings)
 
         for at in self.fragment1:
             at.properties.adf.fragment = 'subsystem1'
         for at in self.fragment2:
             at.properties.adf.fragment = 'subsystem2'
 
-        self.full = ADFJob(name = self.name + '_full',
+        self.full = ADFJob(name = 'full',
             molecule = self.fragment1 + self.fragment2,
             settings = self.settings + self.full_settings)
         self.full.settings.input.fragments.subsystem1 = self.f1

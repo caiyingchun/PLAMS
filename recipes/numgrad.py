@@ -67,7 +67,7 @@ class NumGradJob(MultiJob):
                  self.step * i if axis == 'z' else 0)
             newmol = self.molecule.copy()
             newmol[atom].translate(v, self.unit)
-            newname = self.name + '_{}_{}_{}'.format(atom,axis,i)
+            newname = '{}_{}_{}'.format(atom,axis,i)
             #settings of NumGradJob are directly passed to children single point jobs
             self.children[(atom,axis,i)] = self.jobtype(name=newname, molecule=newmol,
                                                         settings=self.settings)

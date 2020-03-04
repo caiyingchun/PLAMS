@@ -37,13 +37,13 @@ def _restrict(func):
             return func(self, *args, **kwargs)
         else:
             if config.ignore_failure:
-                log('WARNING: Trying to obtain results of a failed calculation {}'.format(self.name), 3)
+                log('WARNING: Trying to obtain results of a failed calculation {}'.format(self._full_name()), 3)
                 try:
                     ret = func(self, *args, **kwargs)
                 except:
-                    log('Obtaining results of {} failed. Returned value is None'.format(self.name), 3)
+                    log('Obtaining results of {} failed. Returned value is None'.format(self._full_name()), 3)
                     return None
-                log('Obtaining results of {} successful. However, no guarantee that they make sense'.format(self.name), 3)
+                log('Obtaining results of {} successful. However, no guarantee that they make sense'.format(self._full_name()), 3)
                 return ret
             else:
                 raise ResultsError('Using Results obtained from a failed calculation')

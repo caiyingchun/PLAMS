@@ -129,13 +129,13 @@ class JobManager:
         If a job with the same name was already registered, *job* is renamed by appending consecutive integers. The number of digits in the appended number is defined by the ``counter_len`` value in ``settings``.
         """
 
-        if job.name in self.names:
-            self.names[job.name] += 1
-            newname = job.name +'.'+ str(self.names[job.name]).zfill(self.settings.counter_len)
-            log('Renaming job {} to {}'.format(job.name, newname), 3)
-            job.name = newname
+        name = job._full_name()
+        if name in self.names:
+            self.names[name] += 1
+            job.name += '.'+ str(self.names[name]).zfill(self.settings.counter_len)
+            log('Renaming job {} to {}'.format(name, job._full_name()), 3)
         else:
-            self.names[job.name] = 1
+            self.names[name] = 1
 
 
 

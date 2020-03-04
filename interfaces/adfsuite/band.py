@@ -122,7 +122,7 @@ class BANDJob(SCMJob):
         s[ig('units')][ig('length')] = 'angstrom'
 
         if len(self.molecule.lattice) in [1,2] and self.molecule.align_lattice():
-            log("The lattice supplied for job {} did not follow the convention required by BAND. I rotated the whole system for you. You're welcome".format(self.name), 3)
+            log("The lattice supplied for job {} did not follow the convention required by BAND. I rotated the whole system for you. You're welcome".format(self._full_name()), 3)
 
         for i,atom in enumerate(self.molecule):
             s.atoms['_'+str(i+1)] = atom.str(symbol=self._atom_symbol(atom), space=18, decimal=10)

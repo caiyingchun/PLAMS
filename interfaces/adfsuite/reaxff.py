@@ -157,7 +157,7 @@ class ReaxFFJob(SingleJob):
 
             if lattice is True:
                 if molecule.align_lattice(convention='reax'):
-                    log("The lattice supplied for job {} did not follow the convention required by ReaxFF. I rotated the whole system for you. You're welcome".format(self.name), 3)
+                    log("The lattice supplied for job {} did not follow the convention required by ReaxFF. I rotated the whole system for you. You're welcome".format(self._full_name()), 3)
 
                 f = lambda x: tuple([self.default_cell_size * int(i==x) for i in range(3)])
                 while len(molecule.lattice) < 3:

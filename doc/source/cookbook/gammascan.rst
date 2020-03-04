@@ -51,7 +51,7 @@ A dedicated |Results| subclass features a simple method for extracting the value
         def prerun(self):
             charges = [self.charge-1, self.charge, self.charge+1]
             for charge, spin in zip(charges, self.spins):
-                name = '{}_{}'.format(self.name, charge)
+                name = str(charge)
                 newjob = ADFJob(name=name, molecule=self.molecule, settings=self.settings)
                 newjob.settings.input.charge = '{} {}'.format(charge, spin)
                 newjob.settings.input.xc.rangesep = "gamma={:f}".format(self.gamma)

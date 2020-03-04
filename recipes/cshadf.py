@@ -36,7 +36,7 @@ class CSHessianADFJob(MultiJob):
 
 
     def prerun(self):
-        self.restartjob = ADFJob(name=self.name+'_res', molecule=self.molecule, settings=self.settings.gradient)
+        self.restartjob = ADFJob(name='restart', molecule=self.molecule, settings=self.settings.gradient)
         self.restartjob.parent = self
         self.restartjob.run()
 
@@ -70,7 +70,7 @@ class CSHessianADFJob(MultiJob):
         for at, v in zip(mol, vec):
             at.translate(self.scaling[column] * step * v)
 
-        newjob = ADFJob(name=f'{self.name}_{column}_{step}', molecule=mol, settings=self.settings.gradient)
+        newjob = ADFJob(name=f'{column}_{step}', molecule=mol, settings=self.settings.gradient)
         newjob.settings.input.restart.file = self.restartjob
         newjob.settings.input.restart.nogeo = 'True'
         return newjob
@@ -80,7 +80,7 @@ class CSHessianADFJob(MultiJob):
         if isinstance(arg, str):
             if arg in self.settings.basis:
                 s = self.settings.basis[arg]
-                self.basisjob = s.jobtype(name=self.name+'_basis', molecule=self.molecule, settings=s)
+                self.basisjob = s.jobtype(name='basis', molecule=self.molecule, settings=s)
                 self.basisjob.parent = self
                 self.basisjob.run()
                 hess = s.get_hessian(self.basisjob.results)
